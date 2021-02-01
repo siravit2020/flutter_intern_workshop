@@ -3,7 +3,7 @@ import 'dart:io' as io;
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'employee.dart';
+import 'note.dart';
 
 class DBHelper2 {
   static Database _db;
@@ -36,21 +36,27 @@ class DBHelper2 {
 
   Future<Note> save(Note note) async {
     var dbClient = await db;
+    ///////////////////////// แบบสุก ////////////////////////////
+    // await dbClient.transaction((txn) async {
+    //   var query = await txn.rawInsert(
+    //       'INSERT INTO $TABLE($TITLE, $MESSAGE, $DATE) VALUES("${note.title}", "${note.message}", "${note.date}")');
+    //   return query;
+    // });
     note.id = await dbClient.insert(TABLE, note.toMap());
     return note;
-    /*
-    await dbClient.transaction((txn) async {
-      var query = "INSERT INTO $TABLE ($NAME) VALUES ('" + employee.name + "')";
-      return await txn.rawInsert(query);
-    });
-    */
+    ///////////////////////// แบบดิบ ////////////////////////////
   }
 
   Future<List<Note>> getNotes() async {
     var dbClient = await db;
+    ///////////////////////// แบบดิบ ////////////////////////////
+    List<Map> list = await dbClient.rawQuery('SELECT * FROM $TABLE');
+    print('แบบดิบ $list');
+    ///////////////////////// แบบสุก ////////////////////////////
     List<Map> maps =
         await dbClient.query(TABLE, columns: [ID, TITLE, MESSAGE, DATE]);
-    //List<Map> maps = await dbClient.rawQuery("SELECT * FROM $TABLE");
+    print('แบบสุก $maps');
+
     List<Note> note = [];
     if (maps.length > 0) {
       for (int i = 0; i < maps.length; i++) {
@@ -62,13 +68,16 @@ class DBHelper2 {
 
   Future<int> delete(int id) async {
     var dbClient = await db;
+    ///////////////////////// แบบสุก ////////////////////////////
     return await dbClient.delete(TABLE, where: '$ID = ?', whereArgs: [id]);
+    ///////////////////////// แบบดิบ ////////////////////////////
+    // return await dbClient.rawDelete('DELETE FROM $TABLE WHERE $ID = ?', [id]);
   }
 
   Future<int> update(Note note) async {
     var dbClient = await db;
-    return await dbClient.update(TABLE, note.toMap(),
-        where: '$ID = ?', whereArgs: [note.id]);
+    return await dbClient
+        .update(TABLE, note.toMap(), where: '$ID = ?', whereArgs: [note.id]);
   }
 
   Future close() async {
