@@ -10,16 +10,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatefulWidget {
+class Fingerprint extends StatefulWidget {
   @override
-  _MyAppState createState() => _MyAppState();
+  _FingerprintState createState() => _FingerprintState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _FingerprintState extends State<Fingerprint> {
   final LocalAuthentication auth = LocalAuthentication();
   bool _canCheckBiometrics;
   List<BiometricType> _availableBiometrics;
