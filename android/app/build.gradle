@@ -50,12 +50,15 @@ android {
         }
     }
 }
-
+configurations {
+compile.exclude group: 'com.google.zxing'
+}
 flutter {
     source '../..'
 }
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    
     api "androidx.core:core:1.1.0-aplha03"
 }

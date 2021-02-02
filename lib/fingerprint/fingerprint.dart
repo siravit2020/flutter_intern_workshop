@@ -9,6 +9,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class Fingerprint extends StatefulWidget {
   @override
@@ -17,8 +18,7 @@ class Fingerprint extends StatefulWidget {
 
 class _FingerprintState extends State<Fingerprint> {
   final LocalAuthentication auth = LocalAuthentication();
-  bool _canCheckBiometrics;
-  List<BiometricType> _availableBiometrics;
+
   String _authorized = 'Not Authorized';
   bool _isAuthenticating = false;
 
@@ -27,27 +27,16 @@ class _FingerprintState extends State<Fingerprint> {
     try {
       canCheckBiometrics = await auth.canCheckBiometrics;
     } on PlatformException catch (e) {
+      Navigator.pop(context);
       print(e);
     }
     if (!mounted) return;
-
-    setState(() {
-      _canCheckBiometrics = canCheckBiometrics;
-    });
   }
 
-  Future<void> _getAvailableBiometrics() async {
-    List<BiometricType> availableBiometrics;
-    try {
-      availableBiometrics = await auth.getAvailableBiometrics();
-    } on PlatformException catch (e) {
-      print(e);
-    }
-    if (!mounted) return;
-
-    setState(() {
-      _availableBiometrics = availableBiometrics;
-    });
+  @override
+  void initState() {
+    super.initState();
+    _checkBiometrics();
   }
 
   Future<void> _authenticate() async {
@@ -82,33 +71,31 @@ class _FingerprintState extends State<Fingerprint> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        home: Scaffold(
-      appBar: AppBar(
-        title: const Text('Plugin example app'),
-      ),
-      body: ConstrainedBox(
+    return SafeArea(
+      child: Scaffold(
+        body: ConstrainedBox(
           constraints: const BoxConstraints.expand(),
           child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Text('Can check biometrics: $_canCheckBiometrics\n'),
-                RaisedButton(
-                  child: const Text('Check biometrics'),
-                  onPressed: _checkBiometrics,
-                ),
-                Text('Available biometrics: $_availableBiometrics\n'),
-                RaisedButton(
-                  child: const Text('Get available biometrics'),
-                  onPressed: _getAvailableBiometrics,
-                ),
-                Text('Current State: $_authorized\n'),
-                RaisedButton(
-                  child: Text(_isAuthenticating ? 'Cancel' : 'Authenticate'),
-                  onPressed:
-                      _isAuthenticating ? _cancelAuthentication : _authenticate,
-                )
-              ])),
-    ));
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SvgPicture.asset(
+                'assets/images/fingerprint.svg',
+                height: 200,
+                color: _isAuthenticating ? Colors.purple : Colors.black,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Text('Current State: $_authorized\n'),
+              RaisedButton(
+                child: Text(_isAuthenticating ? 'Cancel' : 'Authenticate'),
+                onPressed:
+                    _isAuthenticating ? _cancelAuthentication : _authenticate,
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

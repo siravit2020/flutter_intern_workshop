@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-
+//import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:qrscan/qrscan.dart' as scanner;
 import 'dart:io';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:syncfusion_flutter_barcodes/barcodes.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class QRCodeAndBarcode extends StatefulWidget {
   @override
@@ -24,42 +25,14 @@ class _QRCodeAndBarcodeState extends State<QRCodeAndBarcode> {
     super.dispose();
   }
 
-  Future<void> scanQR() async {
-    String barcodeScanRes;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-          "#ff6666", "Cancel", true, ScanMode.QR);
-      print(barcodeScanRes);
-    } on PlatformException {
-      barcodeScanRes = 'Failed to get platform version.';
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      print("sss");
-      print(barcodeScanRes);
-      if (barcodeScanRes != null && barcodeScanRes != '-1') {
-        //_launchURL(barcodeScanRes);
-
-      }
-    });
-  }
-
-  _launchURL(String u) async {
-    String url = 'https://$u';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
+  void scanBar() async {
+    String cameraScanResult = await scanner.scan();
+    
+    if (cameraScanResult.isNotEmpty) {
+      url = cameraScanResult;
+      setState(() {});
     }
   }
-
- 
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +50,7 @@ class _QRCodeAndBarcodeState extends State<QRCodeAndBarcode> {
                     symbology: (change) ? QRCode() : Code128A(),
                   ),
                 ),
-                 SizedBox(
+                SizedBox(
                   height: 10,
                 ),
                 Linkify(
@@ -185,11 +158,7 @@ class _QRCodeAndBarcodeState extends State<QRCodeAndBarcode> {
                   height: 20,
                 ),
                 RaisedButton(
-                  onPressed: () {
-                    setState(() {
-                      scanQR();
-                    });
-                  },
+                  onPressed: scanBar,
                   color: Colors.black,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18.0),
