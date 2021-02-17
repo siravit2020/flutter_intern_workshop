@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_intern_workshop/another_chart/default_doughnut_chart.dart';
@@ -10,6 +9,7 @@ import 'package:flutter_intern_workshop/fingerprint/fingerprint.dart';
 import 'package:flutter_intern_workshop/pdf/pdf_gen_and_read.dart';
 import 'package:flutter_intern_workshop/qrcod_barcode/qrcode.dart';
 import 'package:flutter_intern_workshop/sqlite/sql.dart';
+
 import 'package:syncfusion_flutter_barcodes/barcodes.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -87,7 +87,8 @@ class Total extends StatelessWidget {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => item.widget),
+                            MaterialPageRoute(
+                                builder: (context) => item.widget),
                           );
                         },
                         child: Container(
@@ -100,8 +101,8 @@ class Total extends StatelessWidget {
                                   color: Colors.grey.withOpacity(0.2),
                                   spreadRadius: 1,
                                   blurRadius: 9,
-                                  offset:
-                                      Offset(0, 2), // changes position of shadow
+                                  offset: Offset(
+                                      0, 2), // changes position of shadow
                                 ),
                               ],
                               borderRadius:

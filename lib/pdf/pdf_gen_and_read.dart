@@ -9,6 +9,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:printing/printing.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
+import 'package:share/share.dart';
 
 class PDFReadAndWrite extends StatefulWidget {
   @override
@@ -73,6 +74,39 @@ class _PDFReadAndWriteState extends State<PDFReadAndWrite> {
     await file.writeAsBytes(await pdf.save());
   }
 
+  void share() async {
+    String path;
+    FilePickerResult result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+    if (result != null) {
+      path = result.files.single.path;
+    } else {
+      // User canceled the picker
+    }
+
+    print('path $path');
+
+    final pdf = pw.Document();
+    pdf.addPage(
+      pw.MultiPage(
+          pageFormat: PdfPageFormat.a4,
+          margin: pw.EdgeInsets.all(32),
+          build: (pw.Context context) {
+            return [
+              pw.Header(
+                level: 0,
+                child: pw.Text("Test"),
+              ),
+              pw.Paragraph(text: _controller.text)
+            ];
+          }),
+    );
+    Share.shareFiles(['$path'], text: 'Share PDF');
+  }
+  
+
   void open(File file) async {
     PDFDocument doc = await PDFDocument.fromFile(file);
     Navigator.push(
@@ -108,9 +142,16 @@ class _PDFReadAndWriteState extends State<PDFReadAndWrite> {
                 ),
               ),
             ),
+           
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                FlatButton(
+                  child: Text("Print"),
+                  onPressed: () {
+                    staty();
+                  },
+                ),
                 FlatButton(
                   child: Text("Save"),
                   onPressed: () {
@@ -118,31 +159,30 @@ class _PDFReadAndWriteState extends State<PDFReadAndWrite> {
                   },
                 ),
                 FlatButton(
-                  child: Text("Genarate"),
+                  child: Text("Share"),
                   onPressed: () {
-                    staty();
-                  },
-                ),
-                FlatButton(
-                  child: Text("Open form file"),
-                  onPressed: () async {
-                    FilePickerResult result =
-                        await FilePicker.platform.pickFiles(
-                      type: FileType.custom,
-                      allowedExtensions: ['pdf'],
-                    );
-                    if (result != null) {
-                      File file = File(result.files.single.path);
-
-                      open(file);
-                      print(file.path);
-                    } else {
-                      // User canceled the picker
-                    }
+                    share();
                   },
                 ),
               ],
-            )
+            ),
+             FlatButton(
+              child: Text("Open form file"),
+              onPressed: () async {
+                FilePickerResult result = await FilePicker.platform.pickFiles(
+                  type: FileType.custom,
+                  allowedExtensions: ['pdf'],
+                );
+                if (result != null) {
+                  File file = File(result.files.single.path);
+
+                  open(file);
+                  print(file.path);
+                } else {
+                  // User canceled the picker
+                }
+              },
+            ),
           ],
         ),
       ),
