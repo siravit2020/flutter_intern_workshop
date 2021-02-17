@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.red,
       ),
       home: Total(),
     );
@@ -77,48 +77,50 @@ class Total extends StatelessWidget {
         ),
         body: Padding(
           padding: const EdgeInsets.only(left: 30, right: 30, top: 30),
-          child: Column(
-            children: [
-              for (PageRoute item in pageList)
-                Column(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => item.widget),
-                        );
-                      },
-                      child: Container(
-                        height: 100,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.2),
-                                spreadRadius: 1,
-                                blurRadius: 9,
-                                offset:
-                                    Offset(0, 2), // changes position of shadow
-                              ),
-                            ],
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20))),
-                        child: Center(
-                          child: Text(
-                            item.title,
-                            style: TextStyle(fontSize: 20),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                for (PageRoute item in pageList)
+                  Column(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => item.widget),
+                          );
+                        },
+                        child: Container(
+                          height: 100,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.2),
+                                  spreadRadius: 1,
+                                  blurRadius: 9,
+                                  offset:
+                                      Offset(0, 2), // changes position of shadow
+                                ),
+                              ],
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20))),
+                          child: Center(
+                            child: Text(
+                              item.title,
+                              style: TextStyle(fontSize: 20),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                  ],
-                ),
-            ],
+                      SizedBox(
+                        height: 20,
+                      ),
+                    ],
+                  ),
+              ],
+            ),
           ),
         ),
       ),
