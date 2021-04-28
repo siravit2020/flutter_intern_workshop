@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:printing/printing.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
@@ -54,7 +53,7 @@ class _PDFReadAndWriteState extends State<PDFReadAndWrite> {
     String path = await FilePicker.platform.getDirectoryPath();
 
     print('path $path');
-
+    if (path == null) return;
     final pdf = pw.Document();
     pdf.addPage(
       pw.MultiPage(
@@ -80,12 +79,9 @@ class _PDFReadAndWriteState extends State<PDFReadAndWrite> {
       type: FileType.custom,
       allowedExtensions: ['pdf'],
     );
-    if (result != null) {
-      path = result.files.single.path;
-    } else {
-      // User canceled the picker
-    }
 
+    if (result == null) return;
+    path = result.files.single.path;
     print('path $path');
 
     final pdf = pw.Document();
@@ -105,7 +101,6 @@ class _PDFReadAndWriteState extends State<PDFReadAndWrite> {
     );
     Share.shareFiles(['$path'], text: 'Share PDF');
   }
-  
 
   void open(File file) async {
     PDFDocument doc = await PDFDocument.fromFile(file);
@@ -142,7 +137,6 @@ class _PDFReadAndWriteState extends State<PDFReadAndWrite> {
                 ),
               ),
             ),
-           
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -166,21 +160,17 @@ class _PDFReadAndWriteState extends State<PDFReadAndWrite> {
                 ),
               ],
             ),
-             FlatButton(
+            FlatButton(
               child: Text("Open form file"),
               onPressed: () async {
                 FilePickerResult result = await FilePicker.platform.pickFiles(
                   type: FileType.custom,
                   allowedExtensions: ['pdf'],
                 );
-                if (result != null) {
-                  File file = File(result.files.single.path);
-
-                  open(file);
-                  print(file.path);
-                } else {
-                  // User canceled the picker
-                }
+                if (result == null) return;
+                File file = File(result.files.single.path);
+                open(file);
+                print(file.path);
               },
             ),
           ],

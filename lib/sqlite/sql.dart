@@ -3,8 +3,8 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:intl/intl.dart';
 
-import 'DBHelper2.dart';
-import 'note.dart';
+import 'db_helper.dart';
+import 'note_model.dart';
 
 class SQLite extends StatefulWidget {
   final String title;
@@ -113,8 +113,12 @@ class _SQLiteState extends State<SQLite> with SingleTickerProviderStateMixin {
         ),
       ),
       child: Padding(
-        padding:
-            const EdgeInsets.only(left: 30, right: 30, top: 10, bottom: 10),
+        padding: const EdgeInsets.only(
+          left: 30,
+          right: 30,
+          top: 10,
+          bottom: 10,
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
@@ -145,12 +149,16 @@ class _SQLiteState extends State<SQLite> with SingleTickerProviderStateMixin {
               children: <Widget>[
                 FlatButton(
                   onPressed: (isUpdate) ? update : insert,
-                  child: Text((isUpdate) ? 'UPDATE' : 'ADD'),
+                  child: Text(
+                    (isUpdate) ? 'UPDATE' : 'ADD',
+                  ),
                 ),
                 FlatButton(
                   onPressed: () {
-                    setState(() {});
-                    clearText();
+                    setState(() {
+                      clearText();
+                      isUpdate = false;
+                    });
                   },
                   child: Text('CANCEL'),
                 )
@@ -179,7 +187,11 @@ class _SQLiteState extends State<SQLite> with SingleTickerProviderStateMixin {
             ),
             child: Padding(
               padding: const EdgeInsets.only(
-                  left: 30, right: 30, top: 20, bottom: 20),
+                left: 30,
+                right: 30,
+                top: 20,
+                bottom: 20,
+              ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -190,7 +202,9 @@ class _SQLiteState extends State<SQLite> with SingleTickerProviderStateMixin {
                       Text(
                         note[index].title,
                         style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w600),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                       Row(
                         children: [
@@ -203,8 +217,11 @@ class _SQLiteState extends State<SQLite> with SingleTickerProviderStateMixin {
                               isUpdate = true;
                               setState(() {});
                             },
-                            child: Icon(Icons.edit,
-                                size: 16, color: Colors.black.withOpacity(0.7)),
+                            child: Icon(
+                              Icons.edit,
+                              size: 16,
+                              color: Colors.black.withOpacity(0.7),
+                            ),
                           ),
                           SizedBox(
                             width: 10,
@@ -215,8 +232,11 @@ class _SQLiteState extends State<SQLite> with SingleTickerProviderStateMixin {
                               dbHelper.delete(note[index].id);
                               refreshList();
                             },
-                            child: Icon(Icons.delete,
-                                size: 16, color: Colors.black.withOpacity(0.7)),
+                            child: Icon(
+                              Icons.delete,
+                              size: 16,
+                              color: Colors.black.withOpacity(0.7),
+                            ),
                           ),
                         ],
                       )
@@ -225,9 +245,13 @@ class _SQLiteState extends State<SQLite> with SingleTickerProviderStateMixin {
                   SizedBox(
                     height: 5,
                   ),
-                  Text(note[index].message,
-                      style: TextStyle(
-                          fontSize: 16, color: Colors.black.withOpacity(0.7))),
+                  Text(
+                    note[index].message,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black.withOpacity(0.7),
+                    ),
+                  ),
                   SizedBox(
                     height: 10,
                   ),

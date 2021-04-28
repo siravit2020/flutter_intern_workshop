@@ -1,10 +1,6 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter_intern_workshop/another_chart/default_doughnut_chart.dart';
-import 'package:flutter_intern_workshop/another_chart/sam1.dart';
 import 'package:flutter_intern_workshop/chart/chart.dart';
 
-import 'package:flutter_intern_workshop/chart/sanmeple4.dart';
 import 'package:flutter_intern_workshop/fingerprint/fingerprint.dart';
 import 'package:flutter_intern_workshop/pdf/pdf_gen_and_read.dart';
 import 'package:flutter_intern_workshop/qrcod_barcode/qrcode.dart';
@@ -76,7 +72,11 @@ class Total extends StatelessWidget {
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.only(left: 30, right: 30, top: 30),
+          padding: const EdgeInsets.only(
+            left: 30,
+            right: 30,
+            top: 30,
+          ),
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -95,18 +95,20 @@ class Total extends StatelessWidget {
                           height: 100,
                           width: double.infinity,
                           decoration: BoxDecoration(
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.2),
-                                  spreadRadius: 1,
-                                  blurRadius: 9,
-                                  offset: Offset(
-                                      0, 2), // changes position of shadow
-                                ),
-                              ],
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20))),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.2),
+                                spreadRadius: 1,
+                                blurRadius: 9,
+                                offset:
+                                    Offset(0, 2), // changes position of shadow
+                              ),
+                            ],
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(20),
+                            ),
+                          ),
                           child: Center(
                             child: Text(
                               item.title,

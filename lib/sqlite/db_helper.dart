@@ -3,7 +3,7 @@ import 'dart:io' as io;
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'note.dart';
+import 'note_model.dart';
 
 class DBHelper2 {
   static Database _db;

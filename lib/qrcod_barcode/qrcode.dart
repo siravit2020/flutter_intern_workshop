@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-//import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
-import 'dart:io';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:syncfusion_flutter_barcodes/barcodes.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class QRCodeAndBarcode extends StatefulWidget {
   @override
@@ -27,7 +23,7 @@ class _QRCodeAndBarcodeState extends State<QRCodeAndBarcode> {
 
   void scanBar() async {
     String cameraScanResult = await scanner.scan();
-    
+
     if (cameraScanResult.isNotEmpty) {
       url = cameraScanResult;
       setState(() {});
@@ -108,7 +104,9 @@ class _QRCodeAndBarcodeState extends State<QRCodeAndBarcode> {
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(20),
+                      ),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.grey.withOpacity(0.2),
@@ -120,7 +118,11 @@ class _QRCodeAndBarcodeState extends State<QRCodeAndBarcode> {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.only(
-                          left: 20, right: 20, top: 10, bottom: 10),
+                        left: 20,
+                        right: 20,
+                        top: 10,
+                        bottom: 10,
+                      ),
                       child: Row(
                         children: [
                           Expanded(
